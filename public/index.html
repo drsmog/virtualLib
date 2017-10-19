@@ -10,24 +10,65 @@
 </head>
 
 <body>
-    <h2 id="lozungi">გინდა შეგაყლეო და შეგასირო</h2>
+    <h2 id="lozungi">ყველაფერი რაც კი გითქვამს ამბობ ან იტყვი</h2>
     <div>
-        <input type="text" name="" id="search" placeholder="გინდა შეგაყლეო და შეგასირო">
-        <button id="btn_search">search</button>
-    </div><br><br><br>
+        <input type="text" name="" id="search" placeholder="ყველაფერი რაც კი გითქვამს ამბობ ან იტყვი" style="width: 90%">
+        <button id="btn_search">ძებნა</button>
+    </div>
+    <br>
+    <br>
+    <div>
+        <input type="text" name="" id="search_page" placeholder="გვერდის ნომერი" style="width: 90%">
+        <button id="btn_search_page">ძებნა</button>
+    </div>
+    <br>
+    <br>
+    <br>
     <div id="result">
-        your fucking result
+        გშსდშყ
     </div>
     <script>
-        $('#yle').text('asdasd');
+
         $('#btn_search').click(function () {
             var s = $('#search').val();
-            var url = '/api/search/'+s;
+            var url = '/api/search/' + s;
             $.get(url, function (data, status) {
-                $('#result').text(data);
+                renderContent(data, s);
             });
+            
         });
+        $('#btn_search_page').click(function () {
+            var s = $('#search_page').val();
+            var url = '/api/page/' + s;
+            $.get(url, function (data, status) {
+                renderContent(data, s);
+            });
+            
+        });
+        function renderContent(data, s) {
+            var sp = data.split('##');
+            var pagen = sp[0];
+            var content = sp[1];
+            $('#result').text(content);
+            inputText = document.getElementById("result");
+            var innerHTML = inputText.innerHTML;
+            var index = innerHTML.indexOf(s);
+            if (index >= 0) {
+                innerHTML = innerHTML.substring(0, index) + "<span class='highlight'>" + innerHTML.substring(index, index + s.length) + "</span>" + innerHTML.substring(index + s.length) + "<br><br><span class='pagenumber'>" + pagen + "</span>";
+                inputText.innerHTML = innerHTML;
+            }
+        }
     </script>
+    <style>
+        .highlight {
+            background-color: yellow
+        }
+
+        .pagenumber {
+            font-weight: bold;
+            font-size: 16px;
+        }
+    </style>
 </body>
 
 </html>

@@ -7,10 +7,14 @@ app.get('/api/search/:text', function (req, res, next) {
     var text = req.params.text;
     res.send(virtualLib.getVirtualPage(text));
 });
+app.get('/api/page/:pagenumber', function (req, res, next) {
+    var pageNumber = req.params.pagenumber;
+    res.send(virtualLib.getVirtualPageByPageNumber(pageNumber));
+});
 app.use('*', function (req, res, next) {
     res.redirect('/');
 });
-app.listen('4444', function () {
+app.listen(process.env.PORT || 4444, function () {
     console.log('start listening');
 });
 

@@ -78,7 +78,34 @@ function virtualPage(line) {
         min = min.multiply(5);
     }
 
-    return result;
+    return 'გვერდი ' + current.toString() + ' ## ' + result;
+}
+
+function virtualPageByPageNumber(pagenumber) {
+    let result = '';
+    let bigstr = pagenumber;//wordToNumber(line);
+    let current = bigInt(bigstr);
+    let p = bigInt(50).pow(10);
+    let min = bigInt(bigstr).divide(p);
+    let max = bigInt(bigstr).multiply(p);
+
+    if (min.isZero()) min = bigInt(1);
+
+    while (min.compareTo(current) != 1) {
+        let res = getWord(min.toString());
+        result += res;
+        min = min.multiply(5);
+    }
+
+    result += getWord(current.toString());
+
+    while (min.compareTo(max) != 1) {
+        let res = getWord(min.toString());
+        result += res;
+        min = min.multiply(5);
+    }
+
+    return 'გვერდი ' + current.toString() + ' ## ' + result;
 }
 
 
@@ -117,5 +144,6 @@ function getWord(x) {
 }
 
 module.exports = {
-    getVirtualPage: virtualPage
+    getVirtualPage: virtualPage,
+    getVirtualPageByPageNumber: virtualPageByPageNumber
 };
